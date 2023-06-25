@@ -6,6 +6,8 @@ import utils from 'utils';
 import { Grid } from 'antd';
 import styled from '@emotion/styled';
 import { TEMPLATE } from 'constants/ThemeConstant';
+import logo from '../../assets/png/logo.png';
+import logo_sm from '../../assets/png/logo-sm.png';
 
 const LogoWrapper = styled.div(() => ({
 	height: TEMPLATE.HEADER_HEIGHT,
@@ -27,36 +29,36 @@ export const Logo = ({ mobileLogo, logoType }) => {
 
 	const getLogoWidthGutter = () => {
 		const isNavTop = navType === NAV_TYPE_TOP ? true : false
-		if(isMobile && !mobileLogo) {
+		if (isMobile && !mobileLogo) {
 			return 0
 		}
-		if(isNavTop) {
+		if (isNavTop) {
 			return 'auto'
 		}
-		if(navCollapsed) {
+		if (navCollapsed) {
 			return `${SIDE_NAV_COLLAPSED_WIDTH}px`
 		} else {
 			return `${SIDE_NAV_WIDTH}px`
 		}
 	}
-	
+
 	const getLogo = () => {
-		if(logoType === 'light') {
-			if(navCollapsed) {
-			return '/img/logo-sm-white.png'
+		if (logoType === 'light') {
+			if (navCollapsed) {
+				return '/img/logo-sm-white.png'
 			}
 			return '/img/logo-white.png'
 		}
-	
+
 		if (navCollapsed) {
-			return '/img/logo-sm.png'
+			return logo_sm
 		}
-		return '/img/logo.png'
+		return logo
 	}
 
 	return (
-		<LogoWrapper className={isMobile && !mobileLogo ? 'd-none' : 'logo'} style={{width: `${getLogoWidthGutter()}`}}>
-			<img src={getLogo()} alt={`${APP_NAME} logo`}/>
+		<LogoWrapper className={isMobile && !mobileLogo ? 'd-none' : 'logo'} style={{ width: `${getLogoWidthGutter()}` }}>
+			<img src={getLogo()} alt={`${APP_NAME} logo`} />
 		</LogoWrapper>
 	)
 }
