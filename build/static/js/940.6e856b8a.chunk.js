@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkemilus=self.webpackChunkemilus||[]).push([[940],{9940:function(e,n,u){u.r(n),u.d(n,{MobileApp:function(){return r}});u(2791);var i=u(184),r=function(){return(0,i.jsx)(i.Fragment,{children:"MobileApp"})};n.default=r}}]);
-//# sourceMappingURL=940.6e856b8a.chunk.js.map
