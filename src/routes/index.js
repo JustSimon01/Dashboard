@@ -11,38 +11,38 @@ const Routes = () => {
 	return (
 		<RouterRoutes>
 			<Route path="/" element={<ProtectedRoute />}>
-				<Route path="/" element={<Navigate replace to={AUTHENTICATED_ENTRY} />} />
+
 				{protectedRoutes.map((route, index) => {
 					return (
-						<Route 
-							key={route.key + index} 
+						<Route
+							key={route.key + index}
 							path={route.path}
 							element={
 								<AppRoute
-									routeKey={route.key} 
+									routeKey={route.key}
 									component={route.component}
-									{...route.meta} 
+									{...route.meta}
 								/>
 							}
 						/>
 					)
 				})}
-				<Route path="*" element={<Navigate to="/" replace />} />
+
 			</Route>
 			<Route path="/" element={<PublicRoute />}>
 				{publicRoutes.map(route => {
 					return (
-						<Route 
-							key={route.path} 
+						<Route
+							key={route.path}
 							path={route.path}
 							element={
 								<AppRoute
-									routeKey={route.key} 
+									routeKey={route.key}
 									component={route.component}
-									{...route.meta} 
+									{...route.meta}
 								/>
 							}
-						/ >
+						/>
 					)
 				})}
 			</Route>

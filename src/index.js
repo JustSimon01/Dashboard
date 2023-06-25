@@ -2,13 +2,21 @@ import React from 'react'
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import store from './store';
+import history from './history'
 import 'antd/dist/reset.css'
+import { Provider } from 'react-redux';
+import { HashRouter } from 'react-router-dom';
 
 const container = document.getElementById('root');
 const root = createRoot(container); // createRoot(container!) if you use TypeScript
 root.render(
     <React.StrictMode>
-        <App />
+        <Provider store={store}>
+            <HashRouter history={history}>
+                <App />
+            </HashRouter>
+        </Provider>
     </React.StrictMode>
 );
 
