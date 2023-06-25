@@ -26,6 +26,11 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/app-views/main/dashboard')),
     },
     {
+        key: 'main.draganddrop',
+        path: `${APP_PREFIX_PATH}/main/draganddrop`,
+        component: React.lazy(() => import('views/app-views/main/draganddrop')),
+    },
+    {
         key: 'main.clients',
         path: `${APP_PREFIX_PATH}/main/clients/list`,
         component: React.lazy(() => import('views/app-views/main/clients/list')),

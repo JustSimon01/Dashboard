@@ -10,7 +10,8 @@ import {
   MailOutlined,
   SettingOutlined,
   MobileOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  BorderOuterOutlined
 } from '@ant-design/icons';
 import { APP_PREFIX_PATH } from 'configs/AppConfig'
 
@@ -74,6 +75,14 @@ const mainNavTree = [{
       path: `${APP_PREFIX_PATH}/main/orders`,
       title: 'sidenav.main.orders',
       icon: ShoppingOutlined,
+      breadcrumb: false,
+      submenu: []
+    },
+    {
+      key: 'main-draganddrop',
+      path: `${APP_PREFIX_PATH}/main/draganddrop`,
+      title: 'sidenav.main.draganddrop',
+      icon: BorderOuterOutlined,
       breadcrumb: false,
       submenu: []
     },

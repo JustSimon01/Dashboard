@@ -1,0 +1,10 @@
+.dragContainer {
+  background-color: aqua;
+
+}
+
+.square {
+  background-color: lightslategray;
+  width: 100px;
+  height: 100px;
+}
