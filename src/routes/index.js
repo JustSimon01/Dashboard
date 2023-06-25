@@ -10,7 +10,7 @@ const Routes = () => {
 
 	return (
 		<RouterRoutes>
-			<Route path="/" element={<ProtectedRoute />}>
+			<Route path="/" >
 
 				{protectedRoutes.map((route, index) => {
 					return (
@@ -29,7 +29,7 @@ const Routes = () => {
 				})}
 
 			</Route>
-			<Route path="/" element={<PublicRoute />}>
+			{/* <Route path="/" element={<PublicRoute />}>
 				{publicRoutes.map(route => {
 					return (
 						<Route
@@ -45,7 +45,7 @@ const Routes = () => {
 						/>
 					)
 				})}
-			</Route>
+			</Route> */}
 		</RouterRoutes>
 	)
 }
