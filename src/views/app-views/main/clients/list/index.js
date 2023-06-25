@@ -13,17 +13,18 @@ import { useDispatch } from 'react-redux';
 import { deleteUser } from 'store/slices/usersSlice';
 import { setUserInfo } from 'store/slices/userInfoSlice';
 import { Link } from 'react-router-dom';
+import { API_JSON_PLACE_HOLDER } from 'constants/ApiConstant';
 
-const request = {
-	url: 'https://jsonplaceholder.typicode.com/users',
-	method: 'GET',
-	data: ''
-}
+
 
 const UserList = () => {
 	const [userProfileVisible, setUserProfileVisible] = useState(false);
 	const [selectedUser, setSelectedUser] = useState(null);
-
+	const request = {
+		url: `${API_JSON_PLACE_HOLDER}users`,
+		method: 'GET',
+		data: ''
+	}
 	const users = useSelector((state) => state.users.users);
 	const dispatch = useDispatch();
 
@@ -31,7 +32,7 @@ const UserList = () => {
 		//эмулируем задержку сервера
 		setTimeout(() => {
 			dispatch(fetchUsers(request));
-		}, 2000)
+		}, 1000)
 	}, []);
 
 	const removeUser = userId => {

@@ -7,18 +7,19 @@ import { ROW_GUTTER } from 'constants/ThemeConstant';
 import Flex from 'components/shared-components/Flex';
 import { useNavigate } from 'react-router-dom';
 import { patchUserData } from 'store/slices/userInfoSlice';
+import { API_JSON_PLACE_HOLDER } from 'constants/ApiConstant';
 
 const EditProfile = () => {
 	const [avatarUrl, setAvatarUrl] = useState('https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png');
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const userInfo = useSelector((state) => state.userInfo);
+	const { name, email, username, phone, website, address, company } = userInfo;
 	const request = {
-		url: 'https://jsonplaceholder.typicode.com/users',
+		url: `${API_JSON_PLACE_HOLDER}users`,
 		method: 'PATCH',
 		data: userInfo
 	}
-	const { name, email, username, phone, website, address, company } = userInfo;
 
 	useEffect(() => {
 		if (!userInfo.name) {

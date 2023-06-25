@@ -1,18 +1,13 @@
 import React, { useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import styles from './index.module.css'
-import { Card, Table, Tag, Tooltip, message, Button, Space } from 'antd';
+import { Card, Table, Tag, Tooltip, message, Upload, Button, Space } from 'antd';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import Draggable from './Draggable';
 import Droppable from './Droppable';
-
-const gridStyle = {
-  width: '100px',
-  height: '100px',
-  backgroundColor: 'lightslategray',
-  cursor: 'pointer',
-};
+import handleDownload from 'utils/helpers/jsonDownload';
+import handleUpload from 'utils/helpers/jsonUpload';
+import items from 'assets/data/items.data.json'
 
 const dropContainer = {
   width: '600px',
@@ -21,35 +16,57 @@ const dropContainer = {
 
 const itemsContainer = {
   width: '600px',
+  overflowX: 'scroll',
+  whiteSpace: 'nowrap',
 };
 
 export const DragAndDropContainer = () => {
+  const [dragableElements, setdragableElements] = React.useState(items);
 
   const [elements, setElements] = React.useState([]);
 
   const handleDrop = (itemId) => {
-    setElements([
-      ...elements, itemId
-    ]);
+    setElements((prevElements) => {
+      const updatedItemId = { ...itemId, _id: uuidv4() }
+      const updatedElements = prevElements.filter((element) => element._id !== itemId._id)
+      return [...updatedElements, updatedItemId]
+    });
   };
 
-  useEffect(() => {
-    console.log("Array of Elements ", elements)
-  }, [elements])
+  const customRequest = ({ file, onSuccess }) => {
+    onSuccess('ok')
+  };
+
+  const clearElements = () => {
+    setElements([])
+  }
 
   return (
     <>
       <DndProvider backend={HTML5Backend}>
-        <Card style={itemsContainer} title="Card Title">
-          <Space>
-            <Draggable data={{ id: 7, content: '000' }} />
-            <Draggable data={{ id: 1, content: '111' }} />
-            <Draggable data={{ id: 2, content: '222' }} />
-            <Draggable data={{ id: 3, content: '333' }} />
+        <Space>
+          <Card style={itemsContainer} title="Объекты">
+            <Space>
+              {dragableElements.map((item) => <Draggable key={uuidv4()} data={item} />)}
+            </Space>
+          </Card>
+
+          <Space direction="vertical">
+            <Upload showUploadList={false} customRequest={customRequest} onChange={(info) => {
+              const { file } = info;
+              handleUpload(file.originFileObj, setElements);
+            }}>
+              <Button type="primary">Загрузить схему</Button>
+            </Upload>
+
+            <Button type="primary" onClick={() => handleDownload(elements)}>Выгрузить схему</Button>
+            <Button type="primary" onClick={clearElements}>Очистить схему</Button>
           </Space>
-        </Card>
+
+        </Space>
+
         <Droppable style={dropContainer} onDrop={handleDrop}>
-          {elements.map((item) => { return <Draggable key={uuidv4()} data={{ id: item.id, content: item.content, x: item.x, y: item.y }} /> }
+          {elements.map((item) => { return <Draggable key={uuidv4()} data={item} /> }
           )}
         </Droppable>
       </DndProvider>
@@ -59,5 +76,3 @@ export const DragAndDropContainer = () => {
 
 
 export default DragAndDropContainer;
-
-

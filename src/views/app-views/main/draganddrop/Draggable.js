@@ -1,50 +1,56 @@
 import React from "react";
 import { useDrag } from "react-dnd";
+import vaseImg from 'assets/png/vase.png';
+import tableImg from 'assets/png/table.png';
+import chairImg from 'assets/png/chair.png';
 
 const Draggable = ({ data }) => {
-
-  const { id, content, x, y } = data;
-  const [{ isDragging, clientOffset }, dragRef] = useDrag({
+  const { _id, id, type, x, y } = data;
+  const [{ isDragging }, dragRef] = useDrag({
     type: "box",
-    item: { id, content, x, y },
+    item: { _id, id, type, x, y },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
       clientOffset: monitor.getClientOffset()
     })
   });
 
-  console.log(clientOffset)
+  const getImageByType = (type) => {
+    switch (type) {
+      case 'VASE':
+        return vaseImg;
+      case 'TABLE':
+        return tableImg;
+      case 'CHAIR':
+        return chairImg;
+      default:
+        return null;
+    }
+  };
 
-  console.log("element", x, y)
-
+  const blockSideLength = 50;
 
   const gridStyle = {
-    width: '100px',
-    height: '100px',
-    backgroundColor: 'lightslategray',
-    cursor: 'move',
+    width: blockSideLength,
+    height: blockSideLength,
+    cursor: 'grab',
     opacity: isDragging ? 0.5 : 1
   };
 
   const dropStyle = {
-    width: '100px',
-    height: '100px',
+    width: blockSideLength,
+    height: blockSideLength,
     position: 'absolute',
-    top: y,
-    left: x,
-    backgroundColor: 'lightslategray',
+    top: y - blockSideLength / 2,
+    left: x - blockSideLength / 2,
     cursor: 'move',
     opacity: isDragging ? 0.5 : 1
   };
 
   return (
-    !x && !y
-      ? <div style={gridStyle} ref={dragRef}>
-        {content}
-      </div>
-      : <div style={dropStyle} ref={dragRef}>
-        {content}
-      </div>
+    !x
+      ? <img src={getImageByType(type)} alt={type} ref={dragRef} style={gridStyle} />
+      : <img src={getImageByType(type)} alt={type} ref={dragRef} style={dropStyle} />
   );
 };
 

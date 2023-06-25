@@ -1,10 +1,10 @@
 import { Card, Space } from "antd";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useDrop } from "react-dnd";
+import styles from "./Droppable.module.css"
 
 const Droppable = ({ children, onDrop }) => {
   const dropTargetRef = useRef(null);
-
   const [, dropTarget] = useDrop({
     accept: "box",
     drop(itemId, monitor) {
@@ -22,13 +22,6 @@ const Droppable = ({ children, onDrop }) => {
     }
   });
 
-
-
-  const gridStyle = {
-    width: '600px',
-    height: '500px',
-  };
-
   const dropContainer = {
     width: '600px',
     height: '500px',
@@ -36,13 +29,12 @@ const Droppable = ({ children, onDrop }) => {
   };
 
   return (
-    <div style={gridStyle} ref={dropTarget(dropTargetRef)}>
+    <div className={styles.gridStyle} ref={dropTarget(dropTargetRef)}>
       <Card style={dropContainer}>
         <Space wrap='true'>
           {children}
         </Space>
       </Card>
-
     </div>
   );
 };
