@@ -6,8 +6,9 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Draggable from './Draggable';
 import Droppable from './Droppable';
 import handleDownload from 'utils/helpers/jsonDownload';
-import handleUpload from 'utils/helpers/jsonUpload';
 import items from 'assets/data/items.data.json'
+import { useDispatch, useSelector } from 'react-redux';
+import { clearItems, setItems } from 'store/slices/itemsSlice';
 
 const dropContainer = {
   width: '600px',
@@ -22,24 +23,39 @@ const itemsContainer = {
 
 export const DragAndDropContainer = () => {
   const [dragableElements, setdragableElements] = React.useState(items);
-
-  const [elements, setElements] = React.useState([]);
+  const dispatch = useDispatch();
+  const itemsArray = useSelector((state) => state.items);
 
   const handleDrop = (itemId) => {
-    setElements((prevElements) => {
-      const updatedItemId = { ...itemId, _id: uuidv4() }
-      const updatedElements = prevElements.filter((element) => element._id !== itemId._id)
-      return [...updatedElements, updatedItemId]
-    });
+    const updatedItemId = { ...itemId, _id: uuidv4() };
+    const updatedElements = itemsArray.filter((element) => element._id !== itemId._id);
+    dispatch(setItems([...updatedElements, updatedItemId]));
   };
 
   const customRequest = ({ file, onSuccess }) => {
-    onSuccess('ok')
+    onSuccess('ok');
   };
 
   const clearElements = () => {
-    setElements([])
-  }
+    dispatch(clearItems([]));
+  };
+
+  function handleUpload(file) {
+    let fileObj = file.originFileObj
+    if (fileObj) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const jsonData = JSON.parse(event.target.result);
+        dispatch(setItems(jsonData));
+      };
+      const blob = new Blob([fileObj], { type: fileObj.type });
+      reader.readAsText(blob);
+    }
+  };
+
+  const handleFileDownload = () => {
+    handleDownload(itemsArray);
+  };
 
   return (
     <>
@@ -54,25 +70,23 @@ export const DragAndDropContainer = () => {
           <Space direction="vertical">
             <Upload showUploadList={false} customRequest={customRequest} onChange={(info) => {
               const { file } = info;
-              handleUpload(file.originFileObj, setElements);
+              handleUpload(file);
             }}>
               <Button type="primary">Загрузить схему</Button>
             </Upload>
 
-            <Button type="primary" onClick={() => handleDownload(elements)}>Выгрузить схему</Button>
+            <Button type="primary" onClick={handleFileDownload}>Выгрузить схему</Button>
             <Button type="primary" onClick={clearElements}>Очистить схему</Button>
           </Space>
 
         </Space>
 
         <Droppable style={dropContainer} onDrop={handleDrop}>
-          {elements.map((item) => { return <Draggable key={uuidv4()} data={item} /> }
-          )}
+          {itemsArray && itemsArray.map((item) => { return <Draggable key={uuidv4()} data={item} /> })}
         </Droppable>
       </DndProvider>
     </>
-  )
-}
-
+  );
+};
 
 export default DragAndDropContainer;
